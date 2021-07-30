@@ -1,20 +1,9 @@
 import React, {useContext} from 'react';
-import {useEffect} from 'react';
-import {AppState} from 'react-native';
 import {View, Text, StyleSheet, Button} from 'react-native';
 import {PermissionContext} from '../context/PermissionContext';
 
 export const PermissionScreen = () => {
-  const {permissions, askLocationPermission, checkLocationPermission} =
-    useContext(PermissionContext);
-
-  useEffect(() => {
-    AppState.addEventListener('change', state => {
-      if (state !== 'active') return;
-
-      checkLocationPermission();
-    });
-  }, []);
+  const {permissions, askLocationPermission} = useContext(PermissionContext);
 
   return (
     <View style={styles.container}>
