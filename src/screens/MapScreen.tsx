@@ -1,24 +1,25 @@
-import React from 'react';
-import {Text, View} from 'react-native';
-import MapView from 'react-native-maps';
+import React, {useEffect} from 'react';
+import {View} from 'react-native';
+import {Map} from '../components/Map';
+import Geolocation from '@react-native-community/geolocation';
 
 export const MapScreen = () => {
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      info => console.log(info),
+      error => console.log({error}),
+      {
+        enableHighAccuracy: true,
+      },
+    );
+  }, []);
+
   return (
     <View
       style={{
         flex: 1,
       }}>
-      <MapView
-        style={{
-          flex: 1,
-        }}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      />
+      <Map />
     </View>
   );
 };
