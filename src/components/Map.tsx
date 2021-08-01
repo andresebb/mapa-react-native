@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 import {useLocation} from '../hooks/useLocation';
 import {LoadingScreen} from '../screens/LoadingScreen';
+import {Fab} from './Fab';
 
 export const Map = () => {
   const {hasLocation, initialLocation} = useLocation();
@@ -33,6 +34,15 @@ export const Map = () => {
           description="Soy la descripcion"
         /> */}
       </MapView>
+      <Fab
+        iconName="airplane-outline"
+        onPress={() => console.log('hola ')}
+        style={{
+          position: 'absolute',
+          bottom: 80,
+          right: 20,
+        }}
+      />
     </>
   );
 };
