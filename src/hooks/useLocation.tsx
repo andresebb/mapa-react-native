@@ -24,8 +24,18 @@ export const useLocation = () => {
   const watchId = useRef<number>();
   const isMounted = useRef(true);
 
+  //Evitar errores, con esto sabremos cuando el componente este o no montado
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
   useEffect(() => {
     getCurrentLocation().then(location => {
+      if (!isMounted.current) return;
+
       setInitialLocation(location);
       setUserLocation(location);
       setRouteLines(routes => [...routes, location]);
