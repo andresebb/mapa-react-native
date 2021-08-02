@@ -1,10 +1,12 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import MapView, {Polyline} from 'react-native-maps';
 import {useLocation} from '../hooks/useLocation';
 import {LoadingScreen} from '../screens/LoadingScreen';
 import {Fab} from './Fab';
 
 export const Map = () => {
+  const [showPolyline, setShowPolyline] = useState(true);
+
   const mapViewRef = useRef<MapView>();
   const following = useRef<boolean>(true);
 
@@ -65,11 +67,13 @@ export const Map = () => {
           longitudeDelta: 0.0421,
         }}
         onTouchStart={() => (following.current = false)}>
-        <Polyline
-          coordinates={routeLines}
-          strokeColor="black"
-          strokeWidth={3}
-        />
+        {showPolyline && (
+          <Polyline
+            coordinates={routeLines}
+            strokeColor="black"
+            strokeWidth={3}
+          />
+        )}
         {/* <Marker
           // image={require('../assets/custom-marker.png')}
           coordinate={{
@@ -86,6 +90,15 @@ export const Map = () => {
         style={{
           position: 'absolute',
           bottom: 80,
+          right: 20,
+        }}
+      />
+      <Fab
+        iconName="bicycle-outline"
+        onPress={() => setShowPolyline(!showPolyline)}
+        style={{
+          position: 'absolute',
+          bottom: 20,
           right: 20,
         }}
       />
