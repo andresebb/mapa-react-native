@@ -1,15 +1,25 @@
-import React, {useState} from 'react';
-import MapView, {Marker} from 'react-native-maps';
+import React, {useRef, useState} from 'react';
+import MapView from 'react-native-maps';
 import {useLocation} from '../hooks/useLocation';
 import {LoadingScreen} from '../screens/LoadingScreen';
 import {Fab} from './Fab';
 
 export const Map = () => {
-  const {hasLocation, initialLocation} = useLocation();
+  const {hasLocation, initialLocation, getCurrentLocation} = useLocation();
+  const mapViewRef = useRef<MapView>();
 
   if (!hasLocation) {
     return <LoadingScreen />;
   }
+
+  const centerPosition = async () => {
+    const {latitude, longitude} = await getCurrentLocation();
+
+    mapViewRef.current?.animateCamera({
+      center: {latitude: latitude, longitude: longitude},
+      zoom: 15,
+    });
+  };
 
   return (
     <>
@@ -17,6 +27,7 @@ export const Map = () => {
         style={{
           flex: 1,
         }}
+        ref={el => (mapViewRef.current = el!)}
         showsUserLocation
         initialRegion={{
           latitude: initialLocation!.latitude,
@@ -35,8 +46,8 @@ export const Map = () => {
         /> */}
       </MapView>
       <Fab
-        iconName="airplane-outline"
-        onPress={() => console.log('hola ')}
+        iconName="body-outline"
+        onPress={centerPosition}
         style={{
           position: 'absolute',
           bottom: 80,
