@@ -1,12 +1,32 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useEffect} from 'react';
 import MapView from 'react-native-maps';
 import {useLocation} from '../hooks/useLocation';
 import {LoadingScreen} from '../screens/LoadingScreen';
 import {Fab} from './Fab';
 
 export const Map = () => {
-  const {hasLocation, initialLocation, getCurrentLocation} = useLocation();
+  const {
+    hasLocation,
+    initialLocation,
+    getCurrentLocation,
+    followUserLocation,
+    userLocation,
+  } = useLocation();
   const mapViewRef = useRef<MapView>();
+
+  useEffect(() => {
+    followUserLocation();
+    // return () => {
+    //   stopFollowUserLocation();
+    // };
+  }, []);
+
+  useEffect(() => {
+    const {latitude, longitude} = userLocation;
+    mapViewRef.current?.animateCamera({
+      center: {latitude, longitude},
+    });
+  }, [userLocation]);
 
   if (!hasLocation) {
     return <LoadingScreen />;
