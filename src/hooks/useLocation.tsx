@@ -9,6 +9,8 @@ interface Location {
 export const useLocation = () => {
   const [hasLocation, sethasLocation] = useState(false);
 
+  const [routeLines, setRouteLines] = useState<Location[]>([]);
+
   const [initialLocation, setInitialLocation] = useState<Location>({
     longitude: 0,
     latitude: 0,
@@ -26,6 +28,7 @@ export const useLocation = () => {
     getCurrentLocation().then(location => {
       setInitialLocation(location);
       setUserLocation(location);
+      setRouteLines(routes => [...routes, location]);
       sethasLocation(true);
     });
   }, []);
@@ -56,10 +59,10 @@ export const useLocation = () => {
         };
 
         setUserLocation(location);
-        // setRouteLines(routes => [...routes, location]);
+        setRouteLines(routes => [...routes, location]);
       },
       err => console.log(err),
-      {enableHighAccuracy: true, distanceFilter: 10},
+      {enableHighAccuracy: true, distanceFilter: 2},
     );
   };
 
@@ -74,5 +77,6 @@ export const useLocation = () => {
     followUserLocation,
     userLocation,
     stopFollowUserLocation,
+    routeLines,
   };
 };

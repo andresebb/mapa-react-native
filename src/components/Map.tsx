@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from 'react';
-import MapView from 'react-native-maps';
+import MapView, {Polyline} from 'react-native-maps';
 import {useLocation} from '../hooks/useLocation';
 import {LoadingScreen} from '../screens/LoadingScreen';
 import {Fab} from './Fab';
@@ -15,6 +15,7 @@ export const Map = () => {
     followUserLocation,
     userLocation,
     stopFollowUserLocation,
+    routeLines,
   } = useLocation();
 
   useEffect(() => {
@@ -64,6 +65,11 @@ export const Map = () => {
           longitudeDelta: 0.0421,
         }}
         onTouchStart={() => (following.current = false)}>
+        <Polyline
+          coordinates={routeLines}
+          strokeColor="black"
+          strokeWidth={3}
+        />
         {/* <Marker
           // image={require('../assets/custom-marker.png')}
           coordinate={{
